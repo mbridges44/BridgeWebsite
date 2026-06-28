@@ -44,8 +44,8 @@ const stamp = `${pubDate.getUTCFullYear()}.${String(
 
   .card__link:hover,
   .card__link:focus-visible {
-    background: var(--red);
-    color: #fff;
+    background: var(--toxic);
+    color: var(--ink);
     outline: none;
   }
 
@@ -53,13 +53,13 @@ const stamp = `${pubDate.getUTCFullYear()}.${String(
   .card__link:focus-visible .card__date,
   .card__link:hover .card__mark,
   .card__link:focus-visible .card__mark {
-    color: #fff;
+    color: var(--ink);
   }
 
   .card__mark {
     font-size: 1.4rem;
     line-height: 1.2;
-    color: var(--red);
+    color: var(--toxic);
     font-weight: 700;
   }
 
@@ -72,7 +72,7 @@ const stamp = `${pubDate.getUTCFullYear()}.${String(
     font-family: var(--font-mono);
     font-size: 0.78rem;
     letter-spacing: 0.08em;
-    color: var(--red);
+    color: var(--hazard);
   }
 
   .card__title {
