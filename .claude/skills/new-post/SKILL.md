@@ -50,6 +50,19 @@ Frontmatter fields (all validated at build time):
 2. Set `draft: true` → `draft: false` when it's ready to publish.
 3. Commit and push — the GitHub Actions workflow auto-deploys.
 
+## Adding images
+
+Put post images in `src/assets/anarchy/` (auto-optimized by Astro) and
+reference them from the post with a relative path:
+
+```markdown
+![Combat prototype](../../assets/anarchy/combat-prototype.png)
+```
+
+For an image you don't want processed, use `public/` + an absolute path
+instead (e.g. `public/anarchy/foo.png` → `![alt](/anarchy/foo.png)`).
+See `src/assets/anarchy/README.md` for details.
+
 ## Notes
 
 - The script never overwrites an existing file; it errors if one already exists.
