@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from "astro:content";
+import AnarchyLayout from "../../layouts/AnarchyLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate } = post.data;
+
+// Format in UTC so date-only frontmatter renders as written, independent of
+// the build/local timezone.
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+---
+
+<AnarchyLayout
+  title={`${title} — Anarchy Devlog`}
+  description={description}
+  path={`/anarchy/${post.id}`}
+  backHref="/anarchy"
+  backLabel="Devlog"
+>
+  <article class="post">
+    <p class="post__meta">
+      {fmt(pubDate)}{updatedDate && ` · Updated ${fmt(updatedDate)}`}
+    </p>
+    <h1 class="post__title">{title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</AnarchyLayout>

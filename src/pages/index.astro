@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const year = 2026;
+---
+
+<BaseLayout
+  title="Bridge Apps"
+  description="Bridge Apps LLC — a small software studio building apps and games."
+  path="/"
+>
+  <main class="home">
+    <div class="home__inner">
+      <h1 class="home__name">Bridge&nbsp;Apps</h1>
+      <p class="home__tagline">
+        A small software studio building apps &amp; games.
+      </p>
+
+      <nav class="home__cta" aria-label="Projects">
+        <a class="home__cta-link" href="/anarchy">
+          <span>Anarchy</span>
+          <span class="home__cta-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="home__cta-note">A game in progress &middot; dev blog</p>
+      </nav>
+    </div>
+
+    <footer class="home__footer">
+      <p>&copy; {year} Bridge Apps LLC</p>
+    </footer>
+  </main>
+</BaseLayout>

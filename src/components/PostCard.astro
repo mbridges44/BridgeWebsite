@@ -1,0 +1,96 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate } = post.data;
+
+// Format in UTC so a date-only frontmatter value (e.g. 2026-06-28, parsed as
+// UTC midnight) renders as written regardless of the build/local timezone.
+const stamp = `${pubDate.getUTCFullYear()}.${String(
+  pubDate.getUTCMonth() + 1,
+).padStart(2, "0")}.${String(pubDate.getUTCDate()).padStart(2, "0")}`;
+---
+
+<li class="card">
+  <a class="card__link" href={`/anarchy/${post.id}`}>
+    <span class="card__mark" aria-hidden="true">&#10005;</span>
+    <span class="card__body">
+      <span class="card__date">{stamp}</span>
+      <span class="card__title">{title}</span>
+      <span class="card__desc">{description}</span>
+    </span>
+  </a>
+</li>
+
+<style>
+  .card {
+    border-bottom: 2px solid var(--rule);
+  }
+
+  .card__link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 1.5rem 0.5rem;
+    text-decoration: none;
+    color: var(--fg);
+    transition: background-color 0.12s ease;
+  }
+
+  .card__link:hover,
+  .card__link:focus-visible {
+    background: var(--red);
+    color: #fff;
+    outline: none;
+  }
+
+  .card__link:hover .card__date,
+  .card__link:focus-visible .card__date,
+  .card__link:hover .card__mark,
+  .card__link:focus-visible .card__mark {
+    color: #fff;
+  }
+
+  .card__mark {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .card__body {
+    display: block;
+  }
+
+  .card__date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--red);
+  }
+
+  .card__title {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    font-size: clamp(1.35rem, 4.5vw, 1.9rem);
+  }
+
+  .card__desc {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+</style>

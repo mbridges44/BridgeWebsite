@@ -1,0 +1,62 @@
+---
+/**
+ * AnarchyLayout: document shell for the Anarchy dev blog. Carries the punk-zine
+ * theme (anarchy.css), a back link, and a shared footer. Page content goes in
+ * the default slot. Distinct from BaseLayout, which serves the studio homepage.
+ */
+import "../styles/anarchy.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  backHref?: string;
+  backLabel?: string;
+}
+
+const {
+  title,
+  description = "Anarchy — dev blog for a game in progress by Bridge Apps.",
+  path = "/anarchy",
+  backHref = "/",
+  backLabel = "Bridge Apps",
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site ?? "https://bridgeappsllc.com").href;
+const year = 2026;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="anarchy">
+    <div class="zine">
+      <a class="zine__back" href={backHref}>&larr; {backLabel}</a>
+
+      <slot />
+
+      <footer class="zine__footer">
+        <p>
+          Anarchy &mdash; a Bridge Apps game in progress &middot; &copy; {year}{" "}
+          Bridge Apps LLC &middot; <a href="/">bridgeappsllc.com</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
