@@ -59,8 +59,9 @@ const stamp = `${pubDate.getUTCFullYear()}.${String(
   .card__mark {
     font-size: 1.4rem;
     line-height: 1.2;
-    color: var(--toxic);
+    color: var(--rust);
     font-weight: 700;
+    transform: rotate(6deg);
   }
 
   .card__body {
@@ -68,20 +69,23 @@ const stamp = `${pubDate.getUTCFullYear()}.${String(
   }
 
   .card__date {
-    display: block;
+    display: inline-block;
     font-family: var(--font-mono);
     font-size: 0.78rem;
     letter-spacing: 0.08em;
-    color: var(--hazard);
+    color: var(--rust-bright);
+    border: 1px dashed rgba(176, 86, 42, 0.55);
+    padding: 0.1rem 0.4rem;
+    transform: rotate(-0.75deg);
   }
 
   .card__title {
     display: block;
-    margin-top: 0.15rem;
+    margin-top: 0.4rem;
     font-family: var(--font-display);
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
     line-height: 1.05;
     font-size: clamp(1.35rem, 4.5vw, 1.9rem);
   }

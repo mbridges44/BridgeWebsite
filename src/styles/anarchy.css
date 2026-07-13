@@ -1,13 +1,13 @@
 /*
   The Anarchy theme: irradiated-wasteland zine.
-  Toxic green + hazard yellow on a black-green base, with film grain, a dark
-  vignette, and caution-stripe rules. Deliberately gritty and jarring against
+  Toxic green + rusted metal on a black-green base, with film grain, a dark
+  vignette, and corroded seam rules. Deliberately gritty and jarring against
   the calm studio homepage. Self-contained (own reset + body styles) so it
   never leaks into the studio side.
 
-  Two-accent system:
+  Accent system:
     --toxic   interactive / primary accent (links, marks, hovers, focus)
-    --hazard  labels & warnings (tag, caution stripes, date stamps)
+    --rust    corrosion — labels, date stamps, worn borders, scratched shadows
   Bright accents always take dark text (--ink) for contrast.
 */
 
@@ -15,14 +15,25 @@
   --bg: #0a0b07; /* black-green */
   --surface: #13160d; /* fallout panel */
   --fg: #eef0e2; /* pale ash */
-  --toxic: #b6f23d; /* toxic green */
-  --hazard: #f2d024; /* hazard yellow */
+  --toxic: #83a12f; /* muddy toxic green, like old drum paint */
+  --rust: #b0562a; /* oxidized metal */
+  --rust-bright: #cf6f3a; /* fresher rust for small text on dark */
   --ink: #0a0b07; /* text on bright accents */
-  --muted: #828b6e; /* irradiated green-gray */
-  --rule: #262b1b; /* dim panel rule */
+  --muted: #8a8468; /* dust-caked green-gray */
+  --rule: #2e2a1c; /* corroded panel rule */
 
-  --font-display: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue",
-    "Arial Black", Arial, sans-serif;
+  /* corroded metal seam: uneven rust wash for divider bars */
+  --seam: linear-gradient(
+    90deg,
+    rgba(176, 86, 42, 0.75),
+    rgba(122, 55, 26, 0.55) 30%,
+    rgba(176, 86, 42, 0.7) 55%,
+    rgba(139, 66, 32, 0.5) 80%,
+    rgba(176, 86, 42, 0.7)
+  );
+
+  --font-display: "Impact", "Haettenschmidt", "Franklin Gothic Bold",
+    "Arial Black", sans-serif;
   --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas,
@@ -47,24 +58,36 @@ body.anarchy {
     Rundown surface, layered top-to-bottom:
       1. fine film grain (visible grit)
       2. coarse mottled stains (dirt / wear blotches)
-      3-4. uneven grime — corners sink into shadow
-      5. muddy toxic haze drifting up from the floor
-      6. vignette gloom at the edges
+      3-4. rust bleed seeping in from the top-right and lower-left
+      5-6. uneven grime — corners sink into shadow
+      7. muddy toxic haze drifting up from the floor
+      8. vignette gloom at the edges
   */
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.16'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)' opacity='0.07'/%3E%3C/svg%3E"),
+    radial-gradient(
+      45% 35% at 92% 6%,
+      rgba(176, 86, 42, 0.16),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 40% at 4% 78%,
+      rgba(176, 86, 42, 0.1),
+      transparent 70%
+    ),
     radial-gradient(60% 55% at 12% 18%, rgba(0, 0, 0, 0.55), transparent 70%),
     radial-gradient(55% 60% at 88% 82%, rgba(0, 0, 0, 0.5), transparent 72%),
     radial-gradient(
       130% 70% at 50% 105%,
-      rgba(150, 178, 64, 0.12),
+      rgba(108, 132, 44, 0.12),
       transparent 60%
     ),
     radial-gradient(140% 120% at 50% 45%, transparent 48%, rgba(0, 0, 0, 0.62));
-  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat;
-  background-size: 200px 200px, 600px 600px, auto, auto, auto, auto;
-  background-attachment: fixed, fixed, fixed, fixed, fixed, fixed;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat,
+    no-repeat, no-repeat;
+  background-size: 200px 200px, 600px 600px, auto, auto, auto, auto, auto, auto;
+  background-attachment: fixed, fixed, fixed, fixed, fixed, fixed, fixed, fixed;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -86,7 +109,7 @@ body.anarchy {
 
 .zine {
   width: 100%;
-  max-width: 46rem;
+  max-width: 54rem;
   margin-inline: auto;
   padding: clamp(1.5rem, 5vw, 3.5rem);
 }
@@ -110,7 +133,29 @@ body.anarchy {
 .zine__masthead {
   margin: 1.5rem 0 2.5rem;
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--rule);
+}
+
+/* jagged corroded seam under the masthead */
+.zine__masthead::after {
+  content: "";
+  display: block;
+  height: 0.75rem;
+  margin-top: 1.25rem;
+  background: var(--seam);
+  clip-path: polygon(
+    0 18%,
+    12% 0,
+    31% 26%,
+    52% 4%,
+    74% 22%,
+    100% 0,
+    100% 82%,
+    88% 100%,
+    63% 74%,
+    38% 100%,
+    17% 78%,
+    0 100%
+  );
 }
 
 .zine__title {
@@ -118,11 +163,14 @@ body.anarchy {
   font-family: var(--font-display);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.01em;
   line-height: 0.92;
   font-size: clamp(3rem, 13vw, 6.5rem);
   color: var(--fg);
   word-break: break-word;
+  transform: rotate(-1.5deg);
+  transform-origin: left bottom;
+  text-shadow: 0.045em 0.045em 0 rgba(176, 86, 42, 0.55);
 }
 
 .zine__kicker {
@@ -154,23 +202,30 @@ body.anarchy {
   margin-top: 1rem;
 }
 
+/* date rendered like a stencil stamped on a crate, slightly off-square */
 .post__meta {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--hazard);
+  color: var(--rust-bright);
+  border: 2px dashed rgba(176, 86, 42, 0.6);
+  padding: 0.2rem 0.55rem;
+  transform: rotate(-1deg);
 }
 
 .post__title {
-  margin: 0.5rem 0 1.75rem;
+  margin: 0.75rem 0 1.75rem;
   font-family: var(--font-display);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   line-height: 0.98;
   font-size: clamp(2rem, 7vw, 3.25rem);
+  transform: rotate(-0.75deg);
+  transform-origin: left bottom;
+  text-shadow: 0.045em 0.045em 0 rgba(176, 86, 42, 0.5);
 }
 
 .prose {
@@ -218,6 +273,7 @@ body.anarchy {
   border-left: 4px solid var(--toxic);
   padding: 1rem;
   overflow-x: auto;
+  box-shadow: inset 0 0 2rem rgba(0, 0, 0, 0.45);
 }
 
 .prose pre code {
@@ -229,29 +285,73 @@ body.anarchy {
 .prose blockquote {
   margin-inline: 0;
   padding-left: 1rem;
-  border-left: 4px solid var(--hazard);
+  border-left: 4px solid var(--rust);
   color: var(--muted);
   font-style: italic;
 }
 
 .prose hr {
   border: 0;
-  border-top: 2px dashed var(--rule);
+  height: 0.5rem;
+  background: var(--seam);
+  opacity: 0.55;
   margin: 2.5rem 0;
+  clip-path: polygon(
+    0 22%,
+    15% 0,
+    36% 30%,
+    58% 6%,
+    81% 28%,
+    100% 0,
+    100% 78%,
+    84% 100%,
+    61% 70%,
+    39% 100%,
+    14% 74%,
+    0 100%
+  );
 }
 
+/* screenshots read like recovered prints: sun-bleached, dusty, taped down crooked */
 .prose img {
   max-width: 100%;
   height: auto;
   border: 1px solid var(--rule);
+  filter: sepia(0.28) saturate(0.85) contrast(1.06);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+}
+
+.prose p > img {
+  transform: rotate(-0.5deg);
 }
 
 /* ---- footer ---- */
 
+.zine__footer::before {
+  content: "";
+  display: block;
+  height: 0.5rem;
+  margin-bottom: 1.25rem;
+  background: var(--seam);
+  opacity: 0.55;
+  clip-path: polygon(
+    0 22%,
+    15% 0,
+    36% 30%,
+    58% 6%,
+    81% 28%,
+    100% 0,
+    100% 78%,
+    84% 100%,
+    61% 70%,
+    39% 100%,
+    14% 74%,
+    0 100%
+  );
+}
+
 .zine__footer {
   margin-top: 4rem;
-  padding-top: 1.25rem;
-  border-top: 2px dashed var(--rule);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
