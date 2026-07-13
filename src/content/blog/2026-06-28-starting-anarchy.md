@@ -1,6 +1,6 @@
 ---
-title: "Anarchy"
-description: "An Introduction to Anarchy"
+title: "An Introduction to Anarchy"
+description: "What Anarchy is, the games that inspired it, and some very early screenshots."
 pubDate: 2026-06-28
 draft: false
 ---
