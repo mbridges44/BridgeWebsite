@@ -1,0 +1,33 @@
+---
+/**
+ * Analytics: Google Analytics 4 (gtag.js) beacon, rendered into <head>.
+ *
+ * Included by every document shell (BaseLayout, AnarchyLayout). GA4 measurement
+ * IDs are public by design — they ship in the page HTML — so the ID lives here
+ * rather than in an env var. Only rendered for production builds so local dev
+ * traffic stays out of the reports.
+ *
+ * Both tags are `is:inline` so Astro emits them verbatim instead of bundling
+ * them; gtag.js expects to run as a plain classic script in the document head.
+ */
+const GA_ID = "G-B7H0PERDM3";
+const enabled = import.meta.env.PROD;
+
+const bootstrap = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`;
+---
+
+{
+  enabled && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+      />
+      <script is:inline set:html={bootstrap} />
+    </>
+  )
+}

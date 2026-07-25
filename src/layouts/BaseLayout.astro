@@ -5,6 +5,7 @@
  * is provided via the default slot. The Anarchy section uses AnarchyLayout instead.
  */
 import "../styles/global.css";
+import Analytics from "../components/Analytics.astro";
 
 interface Props {
   title: string;
@@ -40,6 +41,8 @@ const canonical = new URL(path, Astro.site ?? "https://bridgeappsllc.com").href;
     <meta name="twitter:card" content="summary" />
 
     <meta name="generator" content={Astro.generator} />
+
+    <Analytics />
   </head>
   <body>
     <slot />

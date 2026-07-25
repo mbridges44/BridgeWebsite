@@ -5,6 +5,7 @@
  * the default slot. Distinct from BaseLayout, which serves the studio homepage.
  */
 import "../styles/anarchy.css";
+import Analytics from "../components/Analytics.astro";
 
 interface Props {
   title: string;
@@ -44,6 +45,8 @@ const year = 2026;
     <meta name="twitter:card" content="summary" />
 
     <meta name="generator" content={Astro.generator} />
+
+    <Analytics />
   </head>
   <body class="anarchy">
     <div class="zine">
